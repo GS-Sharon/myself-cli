@@ -1,0 +1,43 @@
+#! /usr/bin/env node
+const program = require('commander');
+const chalk = require('chalk')
+
+/* 使得命令简洁，现在已经不需要 */
+// const cleanOptions = (cmd) => {
+//   let args = {};
+//   cmd.options.forEach(Option => {
+//     // 获取到长命令
+//     let key = Option.long.slice(2);
+//     //如果有使用长命令参数，则会在command对象的直接参数中进行记录boolean
+//     if(cmd[key]) args[key] = cmd[key];
+//   })
+//   return args;
+// }
+
+/*设置脚手架版本*/
+program
+  .version(`myself-cli@${require("../package.json").version}`) 
+  .usage('<command>[option]')
+
+/*设置create命令相关*/
+program
+  .command('create <app-name>')
+  .description('create your project')
+  .option('-f --force', 'It will recover destory of your program')
+  .action((name, cmd) => {
+    console.log(name, cmd);
+    require("../lib/create")(name, cmd);
+  })
+
+  /* 设置config */
+program
+  .command('config [value]')
+  .description(`${chalk.cyan('set config')}`)
+  .option('-g --get', 'get value')
+  .option('-s --set <path> <value>', 'set value')
+  .option('-d --delete <path>', 'delete value')
+  .action((value, cmd) => {
+    console.log(cmd)
+  });
+
+program.parse(process.argv);
